@@ -1,0 +1,5 @@
+description: Builds source code using go modules, doesn't modify the go mod file
+steps:
+  - run:
+      name: Build source code
+      command: go build -mod=readonly -v

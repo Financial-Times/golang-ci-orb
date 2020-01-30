@@ -1,0 +1,6 @@
+parameters:
+  golang-image-version:
+    type: string
+    default: "1"
+docker:
+  - image: golang:<<parameters.golang-image-version>>

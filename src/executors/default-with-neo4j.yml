@@ -1,0 +1,15 @@
+parameters:
+  golang-image-version:
+    type: string
+    default: "1"
+  neo4j-image-version:
+    type: string
+    default: "3.4.10-enterprise"
+docker:
+  - image: golang:<<parameters.golang-image-version>>
+  - image: neo4j:<<parameters.neo4j-image-version>>
+    environment:
+      NEO4J_AUTH: none
+      NEO4J_HEAP_MEMORY: 256
+      NEO4J_CACHE_MEMORY: 256M
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"

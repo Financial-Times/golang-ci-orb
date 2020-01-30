@@ -1,0 +1,6 @@
+version: 2.1
+
+description: "Common CI tasks for Go project."
+
+orbs:
+  snyk: snyk/snyk@0.0.8

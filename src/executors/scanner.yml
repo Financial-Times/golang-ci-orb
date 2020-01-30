@@ -1,0 +1,7 @@
+description: CircleCI Go image is used for scanning with snyk as the snyk orb needs tools installed in this image
+parameters:
+  circleci-golang-image-version:
+    type: string
+    default: "1.13"
+docker:
+  - image: circleci/golang:<<parameters.circleci-golang-image-version>>

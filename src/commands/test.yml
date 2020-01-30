@@ -1,0 +1,23 @@
+description: Runs unit and integration tests
+parameters:
+  coverage-report-folder:
+    type: string
+    default: "/tmp/coverage-results"
+steps:
+  - run:
+      name: Download goveralls and go-junit-report
+      command: |
+        GO111MODULE=off go get github.com/mattn/goveralls
+        GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
+  - run:
+      name: Create test folders
+      command: |
+        mkdir -p <<parameters.coverage-report-folder>>
+  - run:
+      name: Run unit and integration tests
+      command: |
+        go test -tags=integration -mod=readonly -race -cover -coverprofile=<<parameters.coverage-report-folder>>/coverage.out ./...
+  - run:
+      name: Report coverage
+      command: |
+        goveralls -coverprofile=<<parameters.coverage-report-folder>>/coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN

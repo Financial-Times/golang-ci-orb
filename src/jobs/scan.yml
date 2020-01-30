@@ -1,0 +1,21 @@
+parameters:
+  executor-name:
+    description: Executor for this job
+    type: executor
+    default: scanner
+  severity-threshold:
+    description: Only report vulnerabilities of provided level or higher (low/medium/high). Default is medium.
+    type: enum
+    enum: ["low", "medium", "high"]
+    default: "medium"
+  fail-on-issues:
+    description: This specifies if builds should be failed or continued based on issues found by Snyk.
+    type: boolean
+    default: true
+executor: <<parameters.executor-name>>
+steps:
+  - checkout
+  - snyk/scan:
+      monitor-on-build: false
+      severity-threshold: << parameters.severity-threshold >>
+      fail-on-issues: << parameters.fail-on-issues >>

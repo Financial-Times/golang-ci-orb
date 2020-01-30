@@ -1,0 +1,30 @@
+parameters:
+  working-dir:
+    description: Working directory for this job
+    type: string
+    default: project
+  executor-name:
+    description: Executor for this job
+    type: executor
+    default: default
+  golangci-lint-version:
+    type: string
+    default: "v1.23.1"
+  golangci-config:
+    description: Location for golangci config file to be used (downloaded with wget)
+    type: string
+    default: "https://raw.githubusercontent.com/Financial-Times/upp-coding-standard/v1.0.0/golangci-config/.golangci.yml"
+  coverage-report-folder:
+    description: Folder to temporarily store coverage results
+    type: string
+    default: "/tmp/coverage-results"
+executor: <<parameters.executor-name>>
+working_directory: /<<parameters.working-dir>>
+steps:
+  - checkout
+  - build
+  - lint:
+      golangci-lint-version: <<parameters.golangci-lint-version>>
+      golangci-config: <<parameters.golangci-config>>
+  - test:
+      coverage-report-folder: <<parameters.coverage-report-folder>>

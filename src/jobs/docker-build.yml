@@ -1,0 +1,18 @@
+parameters:
+  working-dir:
+    description: Working directory for this job
+    type: string
+    default: project
+  docker-version:
+    description: Version of docker
+    type: string
+    default: "18"
+working_directory: /<<parameters.working-dir>>
+docker:
+    - image: docker:<<parameters.docker-version>>
+steps:
+  - checkout
+  - setup_remote_docker
+  - run:
+      name: Build Dockerfile
+      command: docker build .
