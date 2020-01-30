@@ -1,0 +1,38 @@
+version: 2.1
+
+orbs:
+  orb-tools: circleci/orb-tools@9.0.0
+  golang-ci: financial-times/golang-ci@<<pipeline.parameters.dev-orb-version>>
+
+parameters:
+  dev-orb-version:
+    default: 'dev:alpha'
+    type: string
+
+workflows:
+  lint_pack-validate_publish-dev:
+    jobs:
+      - orb-tools/lint
+
+      - orb-tools/pack:
+          requires:
+            - orb-tools/lint
+
+      - orb-tools/publish-dev:
+          orb-name: financial-times/golang-ci
+          context: publish-orbs
+          publish-sha-version: false
+          requires:
+            - orb-tools/pack
+
+      # the following jobs act as integrations tests for this orb, we run them and expect not to error
+      # they should use the just published dev:alpha version
+      - golang-ci/build-and-test:
+          name: default-integration-tests
+          requires:
+            - orb-tools/publish-dev
+
+      - golang-ci/docker-build:
+          name: docker-job-integration-tests
+          requires:
+            - orb-tools/publish-dev
