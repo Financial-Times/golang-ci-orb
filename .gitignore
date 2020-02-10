@@ -1,0 +1,6 @@
+/golang-ci-orb*
+.idea
+.project
+.vscode
+vendor/*/
+.DS_Store

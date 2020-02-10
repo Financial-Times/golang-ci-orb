@@ -1,0 +1,25 @@
+description: Simple example using orb's job build-and-test with the default (with neo4j) values of its parameters in
+  order to build, lint and test Go project
+
+usage:
+  version: 2.1
+
+  orbs:
+    ft-golang-ci: financial-times/golang-ci@1
+
+  workflows:
+    tests_and_docker:
+      jobs:
+        - ft-golang-ci/build-and-test:
+            name: build-and-test-project
+            executor-name: ft-golang-ci/default-with-neo4j
+
+        - ft-golang-ci/docker-build:
+            name: build-docker-image
+            requires:
+              - build-and-test-project
+    snyk-scanning:
+      jobs:
+        - ft-golang-ci/scan:
+            name: scan-dependencies
+            context: org-global

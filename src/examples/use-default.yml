@@ -1,22 +1,23 @@
 description: Simple example using orb's job build-and-test with the default values of its parameters in order to build, lint and test Go project
+
 usage:
   version: 2.1
+
   orbs:
-    golang-ci: epavlova/golang-ci@0.2.0
+    ft-golang-ci: financial-times/golang-ci@1
+
   workflows:
-    version: 2.1
-    tests_and_build_workflow:
+    tests_and_docker:
       jobs:
-        - golang-ci/build-and-test:
+        - ft-golang-ci/build-and-test:
             name: build-and-test-project
 
-        - golang-ci/scan:
-            name: scan-dependencies
-            context: some-context-with-snyk-token
-            requires:
-              - build-and-test-project
-
-        - golang-ci/docker-build:
+        - ft-golang-ci/docker-build:
             name: build-docker-image
             requires:
               - build-and-test-project
+    snyk-scanning:
+      jobs:
+        - ft-golang-ci/scan:
+            name: scan-dependencies
+            context: org-global
