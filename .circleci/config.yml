@@ -1,38 +1,77 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@9.0.0
+  orb-tools: circleci/orb-tools@9.0.1
   golang-ci: financial-times/golang-ci@<<pipeline.parameters.dev-orb-version>>
+
+tags_and_branches: &tags_and_branches
+  tags:
+    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+
+only_tags: &only_tags
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+
+only_branches: &only_branches
+  branches:
+    only: /.*/
 
 parameters:
   dev-orb-version:
-    default: 'dev:alpha'
+    default: dev:alpha
     type: string
+  run-integration-tests:
+    default: false
+    type: boolean
 
 workflows:
-  lint_pack-validate_publish-dev:
+  lint_publish-dev_prod-release:
+    unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - orb-tools/lint
+      - orb-tools/lint:
+          filters: *tags_and_branches
 
       - orb-tools/pack:
           requires:
             - orb-tools/lint
+          filters: *tags_and_branches
 
       - orb-tools/publish-dev:
           orb-name: financial-times/golang-ci
-          context: publish-orbs
-          publish-sha-version: false
+          context: cm-team-orb-publishing
           requires:
             - orb-tools/pack
+          filters: *tags_and_branches
 
-      # the following jobs act as integrations tests for this orb, we run them and expect not to error
-      # they should use the just published dev:alpha version
-      - golang-ci/build-and-test:
-          name: default-integration-tests
+      - orb-tools/trigger-integration-tests-workflow:
+          context: cm-team-orb-publishing
           requires:
             - orb-tools/publish-dev
+          filters: *only_branches
+
+      # This step is executed only on tag release. Please note that currently CircleCI is not able to execute
+      # the integration-tests workflow on tag release. So dev-promote-prod-from-git-tag job is not in the same
+      # workflow as the integration tests.
+      - orb-tools/dev-promote-prod-from-git-tag:
+          orb-name: financial-times/golang-ci
+          context: cm-team-orb-publishing
+          add-pr-comment: false
+          perform-branch-check: true
+          requires:
+            - orb-tools/publish-dev
+          filters: *only_tags
+
+  # The integration tests should be run in a separate workflow triggered by the one above so that they use
+  # the latest dev:alpha version of the orb that was released by the publish-dev job above.
+  integration-tests:
+    when: << pipeline.parameters.run-integration-tests >>
+    jobs:
+      - golang-ci/build-and-test:
+          name: default-integration-tests
+          filters: *only_branches
 
       - golang-ci/docker-build:
           name: docker-job-integration-tests
-          requires:
-            - orb-tools/publish-dev
+          filters: *only_branches
