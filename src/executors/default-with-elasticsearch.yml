@@ -1,0 +1,10 @@
+parameters:
+  golang-image-version:
+    type: string
+    default: "1"
+  elasticsearch-image-version:
+    type: string
+    default: "5.3"
+docker:
+  - image: golang:<<parameters.golang-image-version>>
+  - image: elasticsearch:<<parameters.elasticsearch-image-version>>
