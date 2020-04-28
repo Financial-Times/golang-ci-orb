@@ -10,7 +10,6 @@ docker:
     environment:
       DB_TEST_URL: root:password@/pac
   - image: mysql:<<parameters.mysql-image-version>>
-    # db.t2.small allows 45 connections
     command: [mysqld, --max-connections=45]
     environment:
       MYSQL_ROOT_PASSWORD: password
