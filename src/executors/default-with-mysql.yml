@@ -5,12 +5,21 @@ parameters:
   mysql-image-version:
     type: string
     default: "5.6"
+  db-test-url:
+    type: string
+    default: "root:password@/pac"
+  mysql-root-password:
+    type: string
+    default: "password"
+  mysql-database:
+    type: string
+    default: "pac"
 docker:
   - image: golang:<<parameters.golang-image-version>>
     environment:
-      DB_TEST_URL: root:password@/pac
+      DB_TEST_URL: <<parameters.db-test-url>>
   - image: mysql:<<parameters.mysql-image-version>>
     command: [mysqld, --max-connections=45]
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: pac
+      MYSQL_ROOT_PASSWORD: <<parameters.mysql-root-password>>
+      MYSQL_DATABASE: <<parameters.mysql-database>>
