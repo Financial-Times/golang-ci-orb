@@ -7,13 +7,13 @@ parameters:
     default: "5.6"
   db-test-url:
     type: string
-    default: "root:password@/pac"
+    default: "root:password@/"
   mysql-root-password:
     type: string
     default: "password"
   mysql-database:
     type: string
-    default: "pac"
+    default: "testdb"
 docker:
   - image: golang:<<parameters.golang-image-version>>
     environment:
