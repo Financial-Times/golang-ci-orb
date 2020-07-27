@@ -17,4 +17,4 @@ steps:
       command: wget <<parameters.golangci-config>>
   - run:
       name: Run linters
-      command: golangci-lint run --new-from-rev=$(git rev-parse origin/master) --config .golangci.yml --build-tags=integration
+      command: golangci-lint run --new-from-rev=$(git rev-parse refs/remotes/origin/HEAD) --config .golangci.yml --build-tags=integration
