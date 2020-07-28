@@ -18,11 +18,22 @@ parameters:
     description: Folder to temporarily store coverage results
     type: string
     default: "/tmp/coverage-results"
+  github-username:
+    description: username of user with access to private github repositories
+    type: env_var_name
+    default: GITHUB_USERNAME
+  github-token:
+    description: token to for the user with access to private github repositories
+    type: env_var_name
+    default: GITHUB_TOKEN
+
 executor: <<parameters.executor-name>>
 working_directory: /<<parameters.working-dir>>
 steps:
   - checkout
-  - build
+  - build:
+      github-username: <<parameters.github-username>>
+      github-token: <<parameters.github-token>>
   - lint:
       golangci-lint-version: <<parameters.golangci-lint-version>>
       golangci-config: <<parameters.golangci-config>>
