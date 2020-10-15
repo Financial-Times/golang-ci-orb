@@ -5,5 +5,5 @@ parameters:
 docker:
   - image: golang:<<parameters.golang-image-version>>
     auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_ACCESS_TOKEN
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
