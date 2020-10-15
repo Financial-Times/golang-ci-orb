@@ -7,4 +7,10 @@ parameters:
     default: "5.3"
 docker:
   - image: golang:<<parameters.golang-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
   - image: elasticsearch:<<parameters.elasticsearch-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN

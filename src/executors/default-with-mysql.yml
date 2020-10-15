@@ -16,9 +16,15 @@ parameters:
     default: "testdb"
 docker:
   - image: golang:<<parameters.golang-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
     environment:
       DB_TEST_URL: <<parameters.db-test-url>>
   - image: mysql:<<parameters.mysql-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
     command: [mysqld, --max-connections=45]
     environment:
       MYSQL_ROOT_PASSWORD: <<parameters.mysql-root-password>>
