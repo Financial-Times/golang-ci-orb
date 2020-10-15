@@ -7,7 +7,13 @@ parameters:
     default: "3.4.10-enterprise"
 docker:
   - image: golang:<<parameters.golang-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
   - image: neo4j:<<parameters.neo4j-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
     environment:
       NEO4J_AUTH: none
       NEO4J_HEAP_MEMORY: 256
