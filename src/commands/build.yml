@@ -12,11 +12,9 @@ steps:
   - run:
       name: Build source code
       command: |
-        SSH_INSTEAD_OF=$(git config --global --get url."ssh://git@github.com".insteadOf)
-        if [ -n "$SSH_INSTEAD_OF" ]; then
-          echo "Exists!"
+        if [ ! -z "$GITHUB_USERNAME" ] && [ ! -z "$GITHUB_TOKEN" ]; then
           git config --global --unset url."ssh://git@github.com".insteadOf
+          export GOPRIVATE="github.com/Financial-Times"
+          git config --global url."https://${<<parameters.github-username>>}:${<<parameters.github-token>>}@github.com".insteadOf "https://github.com"
         fi
-        export GOPRIVATE="github.com/Financial-Times"
-        git config --global url."https://${<<parameters.github-username>>}:${<<parameters.github-token>>}@github.com".insteadOf "https://github.com"
         go build -mod=readonly -v ./...
