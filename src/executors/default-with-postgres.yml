@@ -1,0 +1,35 @@
+parameters:
+  golang-image-version:
+    type: string
+    default: "1"
+  postgres-image-version:
+    type: string
+    default: "12.4"
+  db-test-url:
+    type: string
+    default: "root:password@localhost:5432/testdb"
+  postgres-database:
+    type: string
+    default: "testdb"
+  postgres-username:
+    type: string
+    default: "root"
+  postgres-password:
+    type: string
+    default: "password"
+docker:
+  - image: golang:<<parameters.golang-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
+    environment:
+      DB_TEST_URL: <<parameters.db-test-url>>
+  - image: postgres:<<parameters.postgres-image-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
+    command: [postgres, --max-connections=45]
+    environment:
+      POSTGRES_DB: <<parameters.postgres-database>>
+      POSTGRES_USER: <<parameters.postgres-username>>
+      POSTGRES_PASSWORD: <<parameters.postgres-password>>
