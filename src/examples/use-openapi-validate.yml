@@ -1,0 +1,10 @@
+description: Example using orb's job openapi-validate with default node executor passing custom file name parameter in order to validate an openapi swagger file
+usage:
+  version: 2.1
+  orbs:
+    golang-ci: financial-times/golang-ci@1
+  workflows:
+    validate_workflow:
+      jobs:
+        - golang-ci/openapi-validate:
+            file-path: ./api/swagger.yml
