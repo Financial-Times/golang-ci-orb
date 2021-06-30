@@ -1,0 +1,18 @@
+parameters:
+  file-path:
+    description: Path to the configuration file
+    type: string
+    default: ./api/api.yml
+  executor-name:
+    description: Executor for this job
+    type: executor
+    default: node
+
+executor: <<parameters.executor-name>>
+
+steps:
+  - checkout
+  - run: npm config set prefix '~/.local/'
+  - run: export PATH=~/.local/bin/:$PATH
+  - run: npm install -g @apidevtools/swagger-cli@4.0.4
+  - run: swagger-cli validate <<parameters.file-path>>
