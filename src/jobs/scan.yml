@@ -12,9 +12,23 @@ parameters:
     description: This specifies if builds should be failed or continued based on issues found by Snyk.
     type: boolean
     default: true
+  github-username:
+    description: username of user with access to private github repositories
+    type: env_var_name
+    default: GITHUB_USERNAME
+  github-token:
+    description: token to for the user with access to private github repositories
+    type: env_var_name
+    default: GITHUB_TOKEN
 executor: <<parameters.executor-name>>
 steps:
   - checkout
+  - run:
+      name: Unset ssh instead of https
+      command: git config --global --unset url."ssh://git@github.com".insteadOf
+  - run:
+      name: Set GITHUB_USERNAME and GITHUB_TOKEN
+      command: git config --global url."https://${<<parameters.github-username>>}:${<<parameters.github-token>>}@github.com".insteadOf "https://github.com"
   - snyk/scan:
       monitor-on-build: false
       severity-threshold: << parameters.severity-threshold >>
