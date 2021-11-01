@@ -5,11 +5,16 @@ parameters:
   neo4j-image-version:
     type: string
     default: "4.3.6-enterprise"
+  neo4j-test-url:
+    type: string
+    default: "neo4j://core0:7687"
 docker:
   - image: golang:<<parameters.golang-image-version>>
     auth:
       username: $DOCKERHUB_USERNAME
       password: $DOCKERHUB_ACCESS_TOKEN
+    environment:
+      NEO4J_TEST_URL: <<parameters.neo4j-test-url>>
 
   - image: neo4j:<<parameters.neo4j-image-version>>
     name: core0
