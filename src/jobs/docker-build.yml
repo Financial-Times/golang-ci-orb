@@ -1,12 +1,8 @@
 parameters:
-  working-dir:
-    description: Working directory for this job
-    type: string
-    default: project
   docker-version:
-    description: Version of docker
+    description: Version of base CircleCI image
     type: string
-    default: "18"
+    default: "2022.01"
   github-username:
     description: username of user with access to private github repositories
     type: env_var_name
@@ -15,9 +11,8 @@ parameters:
     description: token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
-working_directory: /<<parameters.working-dir>>
 docker:
-    - image: docker:<<parameters.docker-version>>
+    - image: cimg/base:<<parameters.docker-version>>
 steps:
   - checkout
   - setup_remote_docker
