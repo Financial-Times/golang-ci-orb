@@ -8,6 +8,9 @@ parameters:
   neo4j-test-url:
     type: string
     default: "neo4j://core0:7687"
+  neo4j-plugins:
+    type: string
+    default: "[]"
 docker:
   - image: golang:<<parameters.golang-image-version>>
     auth:
@@ -42,6 +45,7 @@ docker:
       NEO4J_dbms_connector_https_listen__address: :6477
       NEO4J_dbms_connector_bolt_listen__address: :7687
       NEO4J_EDITION: enterprise
+      NEO4JLABS_PLUGINS: <<parameters.neo4j-plugins>>
 
   - image: neo4j:<<parameters.neo4j-image-version>>
     name: core1
@@ -69,6 +73,7 @@ docker:
       NEO4J_dbms_connector_https_listen__address: :6478
       NEO4J_dbms_connector_bolt_listen__address: :7688
       NEO4J_EDITION: enterprise
+      NEO4JLABS_PLUGINS: <<parameters.neo4j-plugins>>
 
   - image: neo4j:<<parameters.neo4j-image-version>>
     name: core2
@@ -96,3 +101,4 @@ docker:
       NEO4J_dbms_connector_https_listen__address: :6479
       NEO4J_dbms_connector_bolt_listen__address: :7689
       NEO4J_EDITION: enterprise
+      NEO4JLABS_PLUGINS: <<parameters.neo4j-plugins>>
