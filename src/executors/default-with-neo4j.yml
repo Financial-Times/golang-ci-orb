@@ -5,6 +5,9 @@ parameters:
   neo4j-image-version:
     type: string
     default: "4.3.6-enterprise"
+  neo4j-plugins:
+    type: string
+    default: "[]"
 docker:
   - image: golang:<<parameters.golang-image-version>>
     auth:
@@ -17,3 +20,4 @@ docker:
     environment:
       NEO4J_AUTH: none
       NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4JLABS_PLUGINS: <<parameters.neo4j-plugins>>
