@@ -34,8 +34,8 @@ steps:
   - build:
       github-username: <<parameters.github-username>>
       github-token: <<parameters.github-token>>
+  - test:
+      coverage-report-folder: <<parameters.coverage-report-folder>>
   - lint:
       golangci-lint-version: <<parameters.golangci-lint-version>>
       golangci-config: <<parameters.golangci-config>>
-  - test:
-      coverage-report-folder: <<parameters.coverage-report-folder>>
