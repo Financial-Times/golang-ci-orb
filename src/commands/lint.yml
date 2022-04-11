@@ -6,7 +6,7 @@ parameters:
   golangci-config:
     description: Location for golangci config file to be used (downloaded with wget)
     type: string
-    default: "https://raw.githubusercontent.com/Financial-Times/upp-coding-standard/v1.3.0/golangci-config/.golangci.yml"
+    default: "https://raw.githubusercontent.com/Financial-Times/upp-coding-standard/v1.3.1/golangci-config/.golangci.yml"
 steps:
   - run:
       name: Download golangci-lint
