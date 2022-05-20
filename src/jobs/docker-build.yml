@@ -3,10 +3,20 @@ parameters:
     description: Working directory for this job
     type: string
     default: project
-  docker-version:
-    description: Version of docker
+  base-image:
+    description: |
+      Docker base image. The default is image provided by CircleCI.
+      More info here https://circleci.com/docs/2.0/circleci-images/
     type: string
-    default: "18"
+    default: "cimg/base:2021.04"
+  dockerhub-username:
+    description: username for login in dockerhub to download base image
+    type: env_var_name
+    default: DOCKERHUB_USERNAME
+  dockerhub-token:
+    description: access token for login in dockerhub to download base image
+    type: env_var_name
+    default: DOCKERHUB_ACCESS_TOKEN
   github-username:
     description: username of user with access to private github repositories
     type: env_var_name
@@ -15,9 +25,12 @@ parameters:
     description: token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
-working_directory: /<<parameters.working-dir>>
+working_directory: /home/circleci/<<parameters.working-dir>>
 docker:
-    - image: docker:<<parameters.docker-version>>
+    - image: <<parameters.base-image>>
+      auth:
+        username: ${<<parameters.dockerhub-username>>}
+        password: ${<<parameters.dockerhub-token>>}
 steps:
   - checkout
   - setup_remote_docker
