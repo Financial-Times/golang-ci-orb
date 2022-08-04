@@ -2,7 +2,7 @@ description: Runs golangci-lint toool with predefined linters' config
 parameters:
   golangci-lint-version:
     type: string
-    default: "v1.45.0"
+    default: "v1.47.3"
   golangci-config:
     description: Location for golangci config file to be used (downloaded with wget)
     type: string
