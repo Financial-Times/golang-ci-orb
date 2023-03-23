@@ -20,6 +20,9 @@ workflows:
       - orb-tools/pack:
           filters: *tags_and_branches
 
+      - orb-tools/review:
+          filters: *tags_and_branches
+
       - orb-tools/publish:
           name: publish-dev
           orb-name: financial-times/golang-ci
