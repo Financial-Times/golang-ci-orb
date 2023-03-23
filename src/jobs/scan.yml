@@ -1,3 +1,6 @@
+description: >
+  This job performs scanning of the dependencies of the checkout project
+  for vulnerabilities using snyk/scan command from snyk/snyk orb.
 parameters:
   executor-name:
     description: Executor for this job

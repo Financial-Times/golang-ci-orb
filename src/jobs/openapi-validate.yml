@@ -1,3 +1,6 @@
+description: >
+  This job validates the openapi file of the checkout project.
+  The location of the file is parameterized.
 parameters:
   file-path:
     description: Path to the configuration file

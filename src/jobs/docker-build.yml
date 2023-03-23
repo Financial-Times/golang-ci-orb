@@ -1,3 +1,6 @@
+description: >
+  This job performs Docker build using the Dockerfile
+  of the current checkout project.
 parameters:
   working-dir:
     description: Working directory for this job
