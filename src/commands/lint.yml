@@ -12,17 +12,10 @@ parameters:
       v1.3.2/golangci-config/.golangci.yml"
 steps:
   - run:
-      name: Download golangci-lint
-      command:
-        "curl -sfL https://raw.githubusercontent.com/\
-        golangci/golangci-lint/master/install.sh| \
-        sh -s -- -b $(go env GOPATH)/bin <<parameters.golangci-lint-version>>"
-  - run:
       name: Download linters' config file
       command: wget <<parameters.golangci-config>>
   - run:
       name: Run linters
-      command: >
-        golangci-lint run
-        --new-from-rev=$(git rev-parse refs/remotes/origin/HEAD)
-        --config .golangci.yml --build-tags=integration
+      environment:
+        GOLANGCI_LINT_VERSION: <<parameters.golangci-lint-version>>
+      command: <<include(scripts/golangci-lint.sh)>>

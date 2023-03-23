@@ -37,8 +37,7 @@ steps:
   - setup_remote_docker
   - run:
       name: Build Dockerfile
-      command: |
-        docker build \
-        --build-arg GITHUB_USERNAME=${<<parameters.github-username>>} \
-        --build-arg GITHUB_TOKEN=${<<parameters.github-token>>} \
-         .
+      environment:
+        GITHUB_USERNAME: <<parameters.github-username>>
+        GITHUB_TOKEN: <<parameters.github-token>>
+      command: <<include(scripts/build-dockerfile.sh)>>

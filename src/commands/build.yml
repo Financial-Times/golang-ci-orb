@@ -13,18 +13,8 @@ parameters:
     default: GITHUB_TOKEN
 steps:
   - run:
-      name: Set git ssh
-      command: >
-        git config --global --unset url."ssh://git@github.com".insteadOf
-  - run:
-      name: Set GOPRIVATE
-      command: export GOPRIVATE="github.com/Financial-Times"
-  - run:
-      name: Set git username/token
-      command:
-        "git config --global url.\"https://${<<parameters.github-username>>}:\
-        ${<<parameters.github-token>>}@github.com\".insteadOf \
-        \"https://github.com\""
-  - run:
       name: Build source
-      command: go build -mod=readonly -v ./...
+      environment:
+        GITHUB_USERNAME: <<parameters.github-username>>
+        GITHUB_TOKEN: <<parameters.github-token>>
+      command: <<include(scripts/build-source.sh)>>

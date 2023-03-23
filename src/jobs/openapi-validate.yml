@@ -12,7 +12,8 @@ executor: <<parameters.executor-name>>
 
 steps:
   - checkout
-  - run: npm config set prefix '~/.local/'
-  - run: export PATH=~/.local/bin/:$PATH
-  - run: npm install -g @apidevtools/swagger-cli@4.0.4
-  - run: swagger-cli validate <<parameters.file-path>>
+  - run:
+      name: Validate openapi file
+      environment:
+        FILE_PATH: <<parameters.file-path>>
+      command: <<include(scripts/openapi-validate.sh)>>

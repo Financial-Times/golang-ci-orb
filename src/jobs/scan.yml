@@ -38,10 +38,7 @@ steps:
       command: git config --global --unset url."ssh://git@github.com".insteadOf
   - run:
       name: Set GITHUB_USERNAME and GITHUB_TOKEN
-      command:
-        "git config --global url.\"https://${<<parameters.github-username>>}:\
-        ${<<parameters.github-token>>}@github.com\".insteadOf \
-        \"https://github.com\""
+      command: <<include(scripts/build-source.sh)>>
   - snyk/scan:
       monitor-on-build: true
       project: << parameters.project >>
