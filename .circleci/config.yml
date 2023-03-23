@@ -14,6 +14,9 @@ only_branches: &only_branches
 workflows:
   lint-pack-publish-dev:
     jobs:
+      - orb-tools/lint:
+            filters: *tags_and_branches
+
       - orb-tools/pack:
           filters: *tags_and_branches
 
@@ -25,6 +28,7 @@ workflows:
           context: cm-team-orb-publishing
           enable-pr-comment: false
           requires:
+            - orb-tools/lint
             - orb-tools/pack
           filters: *tags_and_branches
 
