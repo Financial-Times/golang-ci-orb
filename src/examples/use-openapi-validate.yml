@@ -1,4 +1,6 @@
-description: Example using orb's job openapi-validate with default node executor passing custom file name parameter in order to validate an openapi swagger file
+description: >
+  Example using orb's job openapi-validate with default node executor passing
+  custom file name parameter in order to validate an openapi swagger file
 usage:
   version: 2.1
   orbs:

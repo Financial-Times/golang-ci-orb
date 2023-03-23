@@ -22,15 +22,16 @@ parameters:
     type: env_var_name
     default: GITHUB_USERNAME
   github-token:
-    description: token to for the user with access to private github repositories
+    description: >
+      token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
 working_directory: /home/circleci/<<parameters.working-dir>>
 docker:
-    - image: <<parameters.base-image>>
-      auth:
-        username: ${<<parameters.dockerhub-username>>}
-        password: ${<<parameters.dockerhub-token>>}
+  - image: <<parameters.base-image>>
+    auth:
+      username: ${<<parameters.dockerhub-username>>}
+      password: ${<<parameters.dockerhub-token>>}
 steps:
   - checkout
   - setup_remote_docker

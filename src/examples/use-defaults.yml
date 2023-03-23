@@ -1,4 +1,6 @@
-description: Simple example using orb's job build-and-test with the default values of its parameters in order to build, lint and test Go project
+description: >
+  Simple example using orb's job build-and-test with the default values
+  of its parameters in order to build, lint and test Go project
 usage:
   version: 2.1
   orbs:

@@ -1,4 +1,8 @@
-description: Example using orb's job build-and-test with default-with-mysql executor passing custom paramaters defined in the executor config in order to build, lint and test Go project with MySQL. Note that we can only pass parameters defined and used in the executor's config file.
+description: >
+  Example using orb's job build-and-test with default-with-mysql executor
+  passing custom paramaters defined in the executor config in order to build,
+  lint and test Go project with MySQL. Note that we can only pass parameters
+  defined and used in the executor's config file.
 usage:
   version: 2.1
   orbs:

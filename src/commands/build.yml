@@ -1,18 +1,30 @@
-description: Builds source code using go modules, doesn't modify the go mod file
+description: >
+  Builds source code using go modules, doesn't modify the go mod file
 parameters:
   github-username:
-    description: username of user with access to private github repositories
+    description: >
+      username of user with access to private github repositories
     type: env_var_name
     default: GITHUB_USERNAME
   github-token:
-    description: token to for the user with access to private github repositories
+    description: >
+      token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
 steps:
   - run:
-      name: Build source code
-      command: |
+      name: Set git ssh
+      command: >
         git config --global --unset url."ssh://git@github.com".insteadOf
-        export GOPRIVATE="github.com/Financial-Times"
-        git config --global url."https://${<<parameters.github-username>>}:${<<parameters.github-token>>}@github.com".insteadOf "https://github.com"
-        go build -mod=readonly -v ./...
+  - run:
+      name: Set GOPRIVATE
+      command: export GOPRIVATE="github.com/Financial-Times"
+  - run:
+      name: Set git username/token
+      command:
+        "git config --global url.\"https://${<<parameters.github-username>>}:\
+        ${<<parameters.github-token>>}@github.com\".insteadOf \
+        \"https://github.com\""
+  - run:
+      name: Build source
+      command: go build -mod=readonly -v ./...

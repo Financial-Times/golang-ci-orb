@@ -15,9 +15,12 @@ steps:
         mkdir -p <<parameters.coverage-report-folder>>
   - run:
       name: Run unit and integration tests
-      command: |
-        go test -tags=integration -mod=readonly -race -cover -coverprofile=<<parameters.coverage-report-folder>>/coverage.out ./...
+      command: >
+        go test -tags=integration -mod=readonly -race -cover
+        -coverprofile=<<parameters.coverage-report-folder>>/coverage.out ./...
   - run:
       name: Report coverage
-      command: |
-        goveralls -coverprofile=<<parameters.coverage-report-folder>>/coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
+      command: >
+        goveralls
+        -coverprofile=<<parameters.coverage-report-folder>>/coverage.out
+        -service=circle-ci -repotoken=$COVERALLS_TOKEN
