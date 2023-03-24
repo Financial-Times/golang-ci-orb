@@ -2,6 +2,7 @@ version: 2.1
 setup: true
 orbs:
   orb-tools: circleci/orb-tools@11.6
+  shellcheck: circleci/shellcheck@3.1
 
 tags_and_branches: &tags_and_branches
   tags:
@@ -23,6 +24,9 @@ workflows:
       - orb-tools/review:
           filters: *tags_and_branches
 
+      - shellcheck/check:
+          filters: *tags_and_branches
+
       - orb-tools/publish:
           name: publish-dev
           orb-name: financial-times/golang-ci
@@ -33,6 +37,8 @@ workflows:
           requires:
             - orb-tools/lint
             - orb-tools/pack
+            - orb-tools/review
+            - shellcheck/check
           filters: *tags_and_branches
 
       - orb-tools/continue:
