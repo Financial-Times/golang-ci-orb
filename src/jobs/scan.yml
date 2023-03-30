@@ -1,19 +1,28 @@
+description: >
+  This job performs scanning of the dependencies of the checkout project
+  for vulnerabilities using snyk/scan command from snyk/snyk orb.
 parameters:
   executor-name:
     description: Executor for this job
     type: executor
     default: scanner
   severity-threshold:
-    description: Only report vulnerabilities of provided level or higher (low/medium/high). Default is medium.
+    description: >
+      Only report vulnerabilities of provided level or higher (low/medium/high).
+      Default is medium.
     type: enum
     enum: ["low", "medium", "high"]
     default: "medium"
   fail-on-issues:
-    description: This specifies if builds should be failed or continued based on issues found by Snyk.
+    description: >
+      This specifies if builds should be failed or continued based on
+      issues found by Snyk.
     type: boolean
     default: true
   project:
-    description: Name of the project that will be created in snyk. Default is github repository.
+    description: >
+      Name of the project that will be created in snyk.
+      Default is github repository.
     type: string
     default: Financial-Times/$CIRCLE_PROJECT_REPONAME
   github-username:
@@ -32,7 +41,7 @@ steps:
       command: git config --global --unset url."ssh://git@github.com".insteadOf
   - run:
       name: Set GITHUB_USERNAME and GITHUB_TOKEN
-      command: git config --global url."https://${<<parameters.github-username>>}:${<<parameters.github-token>>}@github.com".insteadOf "https://github.com"
+      command: <<include(scripts/build-source.sh)>>
   - snyk/scan:
       monitor-on-build: true
       project: << parameters.project >>

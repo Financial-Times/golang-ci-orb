@@ -1,0 +1,95 @@
+version: 2.1
+
+orbs:
+  orb-tools: circleci/orb-tools@11.5
+  golang-ci: financial-times/golang-ci@dev:<<pipeline.git.revision>>
+
+tags_and_branches: &tags_and_branches
+  tags:
+    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+
+only_tags: &only_tags
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+
+only_master: &only_master
+  branches:
+    only:
+      - master
+
+workflows:
+  integration-test-prod-release:
+    jobs:
+      - golang-ci/build-and-test:
+          name: integration-tests-default
+          filters: *tags_and_branches
+
+      - golang-ci/build-and-test:
+          name: integration-tests-with-neo4j
+          executor-name: golang-ci/default-with-neo4j
+          filters: *tags_and_branches
+
+      - golang-ci/build-and-test:
+          name: integration-tests-with-neo4j-cluster
+          executor-name: golang-ci/default-with-neo4j-cluster
+          filters: *tags_and_branches
+
+      - golang-ci/build-and-test:
+          name: integration-tests-with-elasticsearch
+          executor-name: golang-ci/default-with-elasticsearch
+          filters: *tags_and_branches
+
+      - golang-ci/build-and-test:
+          name: integration-tests-with-mysql
+          executor-name: golang-ci/default-with-mysql
+          filters: *tags_and_branches
+
+      - golang-ci/build-and-test:
+          name: integration-tests-with-postgres
+          executor-name: golang-ci/default-with-postgres
+          filters: *tags_and_branches
+
+      - golang-ci/docker-build:
+          name: docker-job-integration-tests
+          filters: *tags_and_branches
+
+      - orb-tools/pack:
+          filters: *only_tags
+
+      # This step is executed only on tag release.
+      - orb-tools/publish:
+          name: publish-production
+          orb-name: financial-times/golang-ci
+          pub-type: production
+          vcs-type: << pipeline.project.type >>
+          context: cm-team-orb-publishing
+          enable-pr-comment: false
+          requires:
+            - integration-tests-default
+            - integration-tests-with-neo4j
+            - integration-tests-with-neo4j-cluster
+            - integration-tests-with-elasticsearch
+            - integration-tests-with-mysql
+            - integration-tests-with-postgres
+            - docker-job-integration-tests
+          filters: *only_tags
+
+  # Republish the dev:alpha orb every two months to ensure new pipelines don't get rejected due to expired dev orbs.
+  # We need to refer to the dev release of the orb for the integration-tests workflow. However, when there is no dev orb
+  # release (or it's expired) this config file is marked as invalid and none of its workflows is allowed to run.
+  keep-dev-orb-alive:
+    triggers:
+      - schedule:
+          cron: "0 0 1 1,3,5,7,9,11 *"
+          filters: *only_master
+    jobs:
+      - orb-tools/pack
+      - orb-tools/publish:
+          orb-name: financial-times/golang-ci
+          pub-type: dev
+          vcs-type: << pipeline.project.type >>
+          context: cm-team-orb-publishing
+          requires:
+            - orb-tools/pack

@@ -1,3 +1,6 @@
+description: >
+  This job performs Docker build using the Dockerfile
+  of the current checkout project.
 parameters:
   working-dir:
     description: Working directory for this job
@@ -22,22 +25,22 @@ parameters:
     type: env_var_name
     default: GITHUB_USERNAME
   github-token:
-    description: token to for the user with access to private github repositories
+    description: >
+      token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
 working_directory: /home/circleci/<<parameters.working-dir>>
 docker:
-    - image: <<parameters.base-image>>
-      auth:
-        username: ${<<parameters.dockerhub-username>>}
-        password: ${<<parameters.dockerhub-token>>}
+  - image: <<parameters.base-image>>
+    auth:
+      username: ${<<parameters.dockerhub-username>>}
+      password: ${<<parameters.dockerhub-token>>}
 steps:
   - checkout
   - setup_remote_docker
   - run:
       name: Build Dockerfile
-      command: |
-        docker build \
-        --build-arg GITHUB_USERNAME=${<<parameters.github-username>>} \
-        --build-arg GITHUB_TOKEN=${<<parameters.github-token>>} \
-         .
+      environment:
+        GITHUB_USERNAME: <<parameters.github-username>>
+        GITHUB_TOKEN: <<parameters.github-token>>
+      command: <<include(scripts/build-dockerfile.sh)>>

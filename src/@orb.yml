@@ -1,6 +1,14 @@
 version: 2.1
 
-description: "Common CI tasks for Go project."
+description: >
+  The orb includes common CI tasks for Go microservice project.
+  It also includes different executor environment suitable for
+  integration testing.
+  It is actively used and supported by Content&Metadata team.
+
+# This information will be displayed in the orb registry.
+display:
+  source_url: "https://github.com/Financial-Times/golang-ci-orb"
 
 orbs:
   snyk: snyk/snyk@1.1.1

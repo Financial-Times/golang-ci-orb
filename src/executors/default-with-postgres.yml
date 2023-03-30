@@ -1,3 +1,6 @@
+description: >
+  This executor is based on golang Docker image and has a
+  Postgres DB image on top.
 parameters:
   golang-image-version:
     type: string

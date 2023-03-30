@@ -5,9 +5,12 @@ parameters:
     default: "/tmp/coverage-results"
 steps:
   - run:
-      name: Download goveralls and go-junit-report
+      name: Download goveralls
       command: |
         GO111MODULE=off go get github.com/mattn/goveralls
+  - run:
+      name: Download go-junit-report
+      command: |
         GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
   - run:
       name: Create test folders
@@ -15,9 +18,11 @@ steps:
         mkdir -p <<parameters.coverage-report-folder>>
   - run:
       name: Run unit and integration tests
-      command: |
-        go test -tags=integration -mod=readonly -race -cover -coverprofile=<<parameters.coverage-report-folder>>/coverage.out ./...
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/go-test.sh)>>
   - run:
       name: Report coverage
-      command: |
-        goveralls -coverprofile=<<parameters.coverage-report-folder>>/coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/goveralls.sh)>>
