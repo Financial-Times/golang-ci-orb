@@ -7,13 +7,24 @@ parameters:
     description: >
       Location for golangci config file to be used (downloaded with wget)
     type: string
-    default:
-      "https://raw.githubusercontent.com/Financial-Times/upp-coding-standard/\
-      v1.3.2/golangci-config/.golangci.yml"
+    default: ""
 steps:
-  - run:
-      name: Download linters' config file
-      command: wget <<parameters.golangci-config>>
+  - when:
+      condition: <<parameters.golangci-config>>
+      steps:
+        - run:
+            name: Download linters' config file if given as parameter
+            command: wget -O .golangci.yml <<parameters.golangci-config>>
+  - unless:
+      condition: <<parameters.golangci-config>>
+      steps:
+        - run:
+            name: >
+              Copy linters' config file from orb source code into
+              the job executor’s filesystem
+            environment:
+              CONFIG_CONTENT: <<include(conf/.golangci.yml)>>
+            command: /bin/echo "$CONFIG_CONTENT" > .golangci.yml
   - run:
       name: Run linters
       environment:
