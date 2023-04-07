@@ -47,4 +47,4 @@ workflows:
           context: cm-team-orb-publishing
           requires:
             - publish-dev
-          filters: *only_branches
+          filters: *tags_and_branches

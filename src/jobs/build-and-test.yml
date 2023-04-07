@@ -16,9 +16,7 @@ parameters:
     description: >
       Location for golangci config file to be used (downloaded with wget)
     type: string
-    default:
-      "https://raw.githubusercontent.com/Financial-Times/upp-coding-standard/\
-      v1.3.2/golangci-config/.golangci.yml"
+    default: ""
   coverage-report-folder:
     description: Folder to temporarily store coverage results
     type: string

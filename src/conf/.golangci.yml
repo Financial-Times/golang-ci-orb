@@ -1,0 +1,54 @@
+linters-settings:
+  govet:
+    check-shadowing: true
+    settings:
+    printf:
+    funcs:
+      - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+      - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+      - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+      - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+  revive:
+    confidence: 0
+  gocognit:
+    min-complexity: 20
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - errcheck
+    - gocognit
+    - gofmt
+    - goimports
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - revive
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - unparam
+    - unused
+    - whitespace
+
+run:
+  skip-dirs:
+    - test/testdata_etc
+    - pkg/golinters/goanalysis/(checker|passes)
+
+issues:
+  exclude-rules:
+    - text: "weak cryptographic primitive"
+      linters:
+        - gosec
+
+# golangci.com configuration
+# https://github.com/golangci/golangci/wiki/Configuration
+service:
+  # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.17.x
+  prepare:
+    - echo "here I can run custom commands"
