@@ -6,11 +6,7 @@ orbs:
 
 tags_and_branches: &tags_and_branches
   tags:
-    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
-
-only_branches: &only_branches
-  branches:
-    only: /.*/
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
 
 workflows:
   lint-pack-publish-dev:

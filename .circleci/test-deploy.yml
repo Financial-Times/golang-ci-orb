@@ -6,13 +6,13 @@ orbs:
 
 tags_and_branches: &tags_and_branches
   tags:
-    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
 
 only_tags: &only_tags
   branches:
     ignore: /.*/
   tags:
-    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
 
 only_master: &only_master
   branches:
