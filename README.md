@@ -36,7 +36,6 @@ When you are creating a git tag, the second workflow is going to:
 * Deploy the packed orb to the CircleCI registry as the new official orb version.
 
 In order to trigger the deploying to registry step, your git tag should match the [semantic versioning standard](https://semver.org/).
-If you are creating a tag from branch different from master, the last step that is deploying the new version to the CircleCI registry will fail.
 
 #### How to contribute to this project
 
