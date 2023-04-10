@@ -41,7 +41,7 @@ steps:
       command: git config --global --unset url."ssh://git@github.com".insteadOf
   - run:
       name: Set GITHUB_USERNAME and GITHUB_TOKEN
-      command: <<include(scripts/build-source.sh)>>
+      command: <<include(scripts/set-git-creds.sh)>>
   - snyk/scan:
       monitor-on-build: true
       project: << parameters.project >>
