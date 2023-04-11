@@ -39,8 +39,13 @@ steps:
   - checkout
   - setup_remote_docker
   - run:
+      name: Set env vars from GITHUB_USERNAME
+      command: >
+        export GITHUB_USERNAME=${<<parameters.github-username>>}
+  - run:
+      name: Set env vars from GITHUB_TOKEN
+      command: >
+        export GITHUB_TOKEN=${<<parameters.github-token>>}
+  - run:
       name: Build Dockerfile
-      environment:
-        GITHUB_USERNAME: <<parameters.github-username>>
-        GITHUB_TOKEN: <<parameters.github-token>>
       command: <<include(scripts/build-dockerfile.sh)>>

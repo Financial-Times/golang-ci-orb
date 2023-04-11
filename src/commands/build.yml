@@ -13,8 +13,13 @@ parameters:
     default: GITHUB_TOKEN
 steps:
   - run:
+      name: Set env vars from GITHUB_USERNAME
+      command: >
+        export GITHUB_USERNAME=${<<parameters.github-username>>}
+  - run:
+      name: Set env vars from GITHUB_TOKEN
+      command: >
+        export GITHUB_TOKEN=${<<parameters.github-token>>}
+  - run:
       name: Build source
-      environment:
-        GITHUB_USERNAME: <<parameters.github-username>>
-        GITHUB_TOKEN: <<parameters.github-token>>
       command: <<include(scripts/build-source.sh)>>
