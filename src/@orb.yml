@@ -12,3 +12,4 @@ display:
 
 orbs:
   snyk: snyk/snyk@1.1.1
+  docker: circleci/docker@2.2.0
