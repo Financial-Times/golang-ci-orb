@@ -32,12 +32,17 @@ parameters:
 working_directory: /home/circleci/<<parameters.working-dir>>
 docker:
   - image: <<parameters.base-image>>
-    auth:
-      username: ${<<parameters.dockerhub-username>>}
-      password: ${<<parameters.dockerhub-token>>}
+#    auth:
+#      username: ${<<parameters.dockerhub-username>>}
+#      password: ${<<parameters.dockerhub-token>>}
 steps:
   - checkout
-  - setup_remote_docker
+  - docker/dockerlint:
+      treat-warnings-as-errors: true
+  - docker/check:
+      docker-username: <<parameters.dockerhub-username>>
+      docker-password: <<parameters.dockerhub-token>>
+#  - setup_remote_docker
   - run:
       name: Set env vars from GITHUB_USERNAME
       command: >
@@ -46,6 +51,11 @@ steps:
       name: Set env vars from GITHUB_TOKEN
       command: >
         export GITHUB_TOKEN=${<<parameters.github-token>>}
-  - run:
-      name: Build Dockerfile
-      command: <<include(scripts/build-dockerfile.sh)>>
+  - docker/build:
+      name: Build Docker image
+      image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+      docker-username: <<parameters.dockerhub-username>>
+      docker-password: <<parameters.dockerhub-token>>
+#  - run:
+#      name: Build Dockerfile
+#      command: <<include(scripts/build-dockerfile.sh)>>
