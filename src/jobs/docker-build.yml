@@ -52,10 +52,10 @@ steps:
       command: >
         export GITHUB_TOKEN=${<<parameters.github-token>>}
   - docker/build:
-      name: Build Docker image
+#      name: Build Docker image
       image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-      docker-username: <<parameters.dockerhub-username>>
-      docker-password: <<parameters.dockerhub-token>>
+#      docker-username: <<parameters.dockerhub-username>>
+#      docker-password: <<parameters.dockerhub-token>>
 #  - run:
 #      name: Build Dockerfile
 #      command: <<include(scripts/build-dockerfile.sh)>>
