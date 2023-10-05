@@ -4,9 +4,9 @@ description: >
 parameters:
   circleci-golang-image-version:
     type: string
-    default: "1.17"
+    default: "1.21.1"
 docker:
-  - image: circleci/golang:<<parameters.circleci-golang-image-version>>
+  - image: cimg/go:<<parameters.circleci-golang-image-version>>
     auth:
       username: $DOCKERHUB_USERNAME
       password: $DOCKERHUB_ACCESS_TOKEN
