@@ -7,11 +7,11 @@ steps:
   - run:
       name: Download goveralls
       command: |
-        GO111MODULE=off go get github.com/mattn/goveralls
+        go get github.com/mattn/goveralls
   - run:
-      name: Download go-junit-report
+      name: Install goveralls
       command: |
-        GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
+        go install github.com/mattn/goveralls
   - run:
       name: Create test folders
       command: |
