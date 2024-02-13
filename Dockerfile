@@ -5,6 +5,7 @@ ENV PROJECT=orb-integration-tests
 COPY . "/${PROJECT}"
 WORKDIR "/${PROJECT}"
 
+RUN go mod download
 RUN go build -mod=readonly -a -o /artifacts/${PROJECT}
 
 # Multi-stage build - copy certs and the binary into the image
