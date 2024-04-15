@@ -47,3 +47,4 @@ steps:
       project: << parameters.project >>
       severity-threshold: << parameters.severity-threshold >>
       fail-on-issues: << parameters.fail-on-issues >>
+      token-variable: SNYK_TOKEN
