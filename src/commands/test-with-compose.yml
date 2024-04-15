@@ -1,0 +1,39 @@
+description: Runs unit and integration tests with Docker Compose
+parameters:
+  coverage-report-folder:
+    type: string
+    default: "/tmp/coverage-results"
+steps:
+  - run:
+      name: Download Docker Compose
+      command: <<include(scripts/docker-compose-install.sh)>>
+  - run:
+      name: Build and run Docker Compose
+      command: |
+        docker-compose -f docker-compose-tests.yml up -d --build
+  - run:
+      name: Download goveralls
+      command: |
+        go get github.com/mattn/goveralls
+  - run:
+      name: Install goveralls
+      command: |
+        go install github.com/mattn/goveralls
+  - run:
+      name: Create test folders
+      command: |
+        mkdir -p <<parameters.coverage-report-folder>>
+  - run:
+      name: Run unit and integration tests
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/go-test.sh)>>
+  - run:
+      name: Report coverage
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/goveralls.sh)>>
+  - run:
+      name: Stop Docker Compose
+      command: |
+        docker-compose down
