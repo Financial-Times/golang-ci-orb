@@ -9,7 +9,7 @@ Please refer to [CircleCI registry](https://circleci.com/orbs/registry/orb/finan
 There are two CircleCI workflows associated with this project. They have different behaviour depending on whether they are triggered by commit push or by creating specific git tag.
 1. On push
 
-When you are pushing a commit in any branch including master, the first setup workflow is going to: 
+When you are pushing a commit in any branch including main, the first setup workflow is going to: 
 * Lint the orb's code.
 * Pack the orb source code into single yaml file.
 * Review if the orb source code complies to predefined list of best practices.
@@ -22,7 +22,7 @@ When you are pushing a commit, the second workflow is going to:
 
 2. On tag
 
-When you are creating a new tag from master branch (you can use the simple GitHub UI to create new release with associated git tag), the first workflow is going to:
+When you are creating a new tag from main branch (you can use the simple GitHub UI to create new release with associated git tag), the first workflow is going to:
 * Lint the orb's code.
 * Pack the orb source code into single yaml file.
 * Review if the orb source code complies to predefined list of best practices.
@@ -43,7 +43,7 @@ In order to create a new version of this orb and release it to CircleCI registry
 - Checkout a new branch and make your changes there. 
 - Make sure that all checks are passing for your branch and make PR
 - You can test the orb at this point in another project referring to it as `financial-times/golang-ci@dev:alpha` or `financial-times/golang-ci@dev:<SHA1>`
-- After the PR is approved by 2 reviewers, you can merge it to master
+- After the PR is approved by 2 reviewers, you can merge it to main
 - Create a GitHub release with the appropriate tag following [semantic versioning standard](https://semver.org/).
 
 #### Some resource on writing CircleCI orbs
