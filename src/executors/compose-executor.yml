@@ -1,0 +1,17 @@
+description: >
+    This executor is based on a machine executor with Docker and
+    Docker Compose pre-installed, and installs Golang.
+parameters:
+  golang-version:
+    type: string
+    default: "1.23.2"
+  github-username:
+    type: env_var_name
+    default: GITHUB_USERNAME
+  github-token:
+    type: env_var_name
+    default: GITHUB_TOKEN
+  coverage-report-folder:
+    type: string
+    default: /tmp/coverage-results/coverage
+machine: true

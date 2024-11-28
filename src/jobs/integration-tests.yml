@@ -1,0 +1,61 @@
+description: >
+  This job runs integration tests for your go code and reports coverage.
+parameters:
+  working-dir:
+    description: Working directory for this job
+    type: string
+    default: /home/circleci/project
+  executor-name:
+    description: Executor for this job
+    type: executor
+    default: compose-executor
+  golang-version:
+    type: string
+    default: "1.23.2"
+  github-username:
+    type: env_var_name
+    default: GITHUB_USERNAME
+  github-token:
+    type: env_var_name
+    default: GITHUB_TOKEN
+  coverage-report-folder:
+    type: string
+    default: /tmp/coverage-results/coverage
+
+executor: <<parameters.executor-name>>
+working_directory: /<<parameters.working-dir>>
+steps:
+  - checkout
+  - run:
+      name: Unset ssh instead of https
+      command: git config --global --unset url."ssh://git@github.com".insteadOf
+  - run:
+      name: Set GITHUB_USERNAME and GITHUB_TOKEN
+      command: <<include(scripts/set-git-creds.sh)>>
+  - run:
+      name: Install Golang
+      environment:
+        GOLANG_VERSION: <<parameters.golang-version>>
+      command: <<include(scripts/install-golang.sh)>>
+  - run:
+      name: Download goveralls
+      command: |
+        go get github.com/mattn/goveralls
+  - run:
+      name: Install goveralls
+      command: |
+        go install github.com/mattn/goveralls
+  - run:
+      name: Create test folders
+      command: |
+        mkdir -p << parameters.coverage-report-folder >>
+  - run:
+      name: Run integration tests
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/run-integration-tests.sh)>>
+  - run:
+      name: Report coverage
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/goveralls.sh)>>
