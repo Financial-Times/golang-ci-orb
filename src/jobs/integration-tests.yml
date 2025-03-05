@@ -26,6 +26,16 @@ executor: <<parameters.executor-name>>
 working_directory: /<<parameters.working-dir>>
 steps:
   - checkout
+  - setup_remote_docker:
+      docker_layer_caching: true
+  - run:
+      name: Run integration tests
+      environment:
+        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
+      command: <<include(scripts/run-integration-tests.sh)>>
+  - run:
+      name: Check files
+      command: ls -ltr
   - run:
       name: Unset ssh instead of https
       command: git config --global --unset url."ssh://git@github.com".insteadOf
@@ -33,29 +43,7 @@ steps:
       name: Set GITHUB_USERNAME and GITHUB_TOKEN
       command: <<include(scripts/set-git-creds.sh)>>
   - run:
-      name: Install Golang
-      environment:
-        GOLANG_VERSION: <<parameters.golang-version>>
-      command: <<include(scripts/install-golang.sh)>>
-  - run:
-      name: Download goveralls
-      command: |
-        go get github.com/mattn/goveralls
-  - run:
-      name: Install goveralls
-      command: |
-        go install github.com/mattn/goveralls
-  - run:
-      name: Create test folders
-      command: |
-        mkdir -p << parameters.coverage-report-folder >>
-  - run:
-      name: Run integration tests
-      environment:
-        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
-      command: <<include(scripts/run-integration-tests.sh)>>
-  - run:
       name: Report coverage
       environment:
-        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
-      command: <<include(scripts/goveralls.sh)>>
+        GOLANG_VERSION: <<parameters.golang-version>>
+      command: <<include(scripts/goveralls-integration-tests.sh)>>
