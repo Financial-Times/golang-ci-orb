@@ -7,7 +7,7 @@ parameters:
     default: "1"
   postgres-image-version:
     type: string
-    default: "12.4"
+    default: "13.18"
   db-test-url:
     type: string
     default: "root:password@localhost:5432/testdb"
