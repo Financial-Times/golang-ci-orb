@@ -51,6 +51,11 @@ workflows:
           executor-name: golang-ci/default-with-postgres
           filters: *tags_and_branches
 
+      - golang-ci/build-and-run-integration-tests:
+          name: integration-tests-with-compose
+          executor-name: golang-ci/compose-executor
+          filters: *tags_and_branches
+
       - golang-ci/docker-build:
           name: docker-job-integration-tests
           filters: *tags_and_branches
@@ -73,6 +78,7 @@ workflows:
             - integration-tests-with-elasticsearch
             - integration-tests-with-mysql
             - integration-tests-with-postgres
+            - integration-tests-with-compose
             - docker-job-integration-tests
             - orb-tools/pack
           filters: *only_tags
