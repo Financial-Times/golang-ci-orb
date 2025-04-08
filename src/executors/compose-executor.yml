@@ -22,3 +22,5 @@ docker:
     auth:
       username: $DOCKERHUB_USERNAME
       password: $DOCKERHUB_ACCESS_TOKEN
+environment:
+  EXECUTOR_NAME: compose-executor
