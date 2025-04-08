@@ -51,7 +51,7 @@ workflows:
           executor-name: golang-ci/default-with-postgres
           filters: *tags_and_branches
 
-      - golang-ci/build-and-run-integration-tests:
+      - golang-ci/build-and-test:
           name: integration-tests-with-compose
           executor-name: golang-ci/compose-executor
           filters: *tags_and_branches

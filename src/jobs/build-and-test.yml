@@ -4,7 +4,7 @@ parameters:
   working-dir:
     description: Working directory for this job
     type: string
-    default: project
+    default: home/circleci/project
   executor-name:
     description: Executor for this job
     type: executor

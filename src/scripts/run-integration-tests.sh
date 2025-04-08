@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if the executor is compose-executor
+if [ "$EXECUTOR_NAME" != "compose-executor" ]; then
+  echo "Executor is not compose-executor. Skipping integration tests."
+  exit 0
+fi
+
 # Check if the required file exists
 if [ ! -f "docker-compose-tests.yml" ]; then
   echo "File docker-compose-tests.yml not found. Exiting with status 0."
