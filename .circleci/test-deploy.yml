@@ -54,6 +54,7 @@ workflows:
       - golang-ci/build-and-test:
           name: integration-tests-with-compose
           executor-name: golang-ci/compose-executor
+          run-docker-integration-tests: true
           filters: *tags_and_branches
 
       - golang-ci/docker-build:

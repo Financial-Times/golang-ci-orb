@@ -30,6 +30,11 @@ parameters:
       token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
+  run-docker-integration-tests:
+    description: >
+      Whether to run the integration tests in a docker container
+    type: boolean
+    default: false
 
 executor: <<parameters.executor-name>>
 working_directory: /<<parameters.working-dir>>
@@ -40,11 +45,14 @@ steps:
       github-token: <<parameters.github-token>>
   - test:
       coverage-report-folder: <<parameters.coverage-report-folder>>
-  - setup_remote_docker:
-      docker_layer_caching: true
-  - run:
-      name: Run integration tests
-      command: <<include(scripts/run-integration-tests.sh)>>
+  - when:
+      condition: <<parameters.run-docker-integration-tests>>
+      steps:
+        - setup_remote_docker:
+            docker_layer_caching: true
+        - run:
+            name: Run docker integration tests
+            command: <<include(scripts/run-integration-tests.sh)>>
   - lint:
       golangci-lint-version: <<parameters.golangci-lint-version>>
       golangci-config: <<parameters.golangci-config>>
