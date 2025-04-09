@@ -1,0 +1,12 @@
+services:
+    test-runner:
+        build:
+            context: .
+            dockerfile: Dockerfile.tests
+            args:
+                GITHUB_USERNAME: "${GITHUB_USERNAME}"
+                GITHUB_TOKEN: "${GITHUB_TOKEN}"
+        container_name: test-runner
+        volumes:
+            - ${COVERAGE_REPORT_FOLDER:-/tmp/coverage-results}:${COVERAGE_REPORT_FOLDER:-/tmp/coverage-results}
+        command:  go test -tags=integration -mod=readonly -race -cover -coverprofile="${COVERAGE_REPORT_FOLDER:-/tmp/coverage-results}/coverage.out" ./...

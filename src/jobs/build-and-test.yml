@@ -4,7 +4,7 @@ parameters:
   working-dir:
     description: Working directory for this job
     type: string
-    default: project
+    default: home/circleci/project
   executor-name:
     description: Executor for this job
     type: executor
@@ -30,6 +30,11 @@ parameters:
       token to for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
+  run-docker-integration-tests:
+    description: >
+      Whether to run the integration tests in a docker container
+    type: boolean
+    default: false
 
 executor: <<parameters.executor-name>>
 working_directory: /<<parameters.working-dir>>
@@ -40,6 +45,14 @@ steps:
       github-token: <<parameters.github-token>>
   - test:
       coverage-report-folder: <<parameters.coverage-report-folder>>
+  - when:
+      condition: <<parameters.run-docker-integration-tests>>
+      steps:
+        - setup_remote_docker:
+            docker_layer_caching: true
+        - run:
+            name: Run docker integration tests
+            command: <<include(scripts/run-integration-tests.sh)>>
   - lint:
       golangci-lint-version: <<parameters.golangci-lint-version>>
       golangci-config: <<parameters.golangci-config>>

@@ -8,9 +8,10 @@ parameters:
     default: GITHUB_USERNAME
   github-token:
     description: >
-      token to for the user with access to private github repositories
+      token for the user with access to private github repositories
     type: env_var_name
     default: GITHUB_TOKEN
+
 steps:
   - run:
       name: Set env vars from GITHUB_USERNAME
@@ -21,5 +22,5 @@ steps:
       command: >
         export GITHUB_TOKEN=${<<parameters.github-token>>}
   - run:
-      name: Build source
+      name: Build Source
       command: <<include(scripts/build-source.sh)>>
