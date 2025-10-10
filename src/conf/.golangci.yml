@@ -37,9 +37,6 @@ linters:
     exhaustive:
       # Treat presence of a default clause as exhaustive
       default-signifies-exhaustive: true
-    recvcheck:
-      # Do not report on built-in types
-      disable-builtin: true
     revive:
       confidence: 0
   exclusions:
