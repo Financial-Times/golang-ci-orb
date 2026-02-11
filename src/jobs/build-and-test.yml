@@ -11,7 +11,7 @@ parameters:
     default: default
   golangci-lint-version:
     type: string
-    default: "v2.4.0"
+    default: "v2.9.0"
   golangci-config:
     description: >
       Location for golangci config file to be used (downloaded with wget)
