@@ -1,0 +1,51 @@
+# Go
+bin/
+dist/
+build/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go vendor
+vendor/
+
+# CircleCI / Orb
+.orb/
+.orb-tools/
+orb-pack/
+orb-release/
+
+# CircleCI CLI local builds
+.circleci-cli/
+.circleci/config.yml.processed
+
+# Local orb testing artifacts
+*.orb.yml
+*.orb.json
+
+# Environment
+.env
+.env.*
+*.local
+*.secret
+secrets.yml
+
+# IDEs / Editors
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp / Test
+tmp/
+temp/
+*.tmp

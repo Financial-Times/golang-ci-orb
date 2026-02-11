@@ -1,3 +1,3 @@
 module github.com/Financial-Times/golang-ci-orb
 
-go 1.25
+go 1.26
