@@ -25,37 +25,44 @@ workflows:
       - golang-ci/build-and-test:
           name: integration-tests-default
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/build-and-test:
           name: integration-tests-with-neo4j
           executor-name: golang-ci/default-with-neo4j
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/build-and-test:
           name: integration-tests-with-neo4j-cluster
           executor-name: golang-ci/default-with-neo4j-cluster
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/build-and-test:
           name: integration-tests-with-elasticsearch
           executor-name: golang-ci/default-with-elasticsearch
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/build-and-test:
           name: integration-tests-with-mysql
           executor-name: golang-ci/default-with-mysql
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/build-and-test:
           name: integration-tests-with-postgres
           executor-name: golang-ci/default-with-postgres
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/build-and-test:
           name: integration-tests-with-compose
           executor-name: golang-ci/compose-executor
           run-docker-integration-tests: true
           filters: *tags_and_branches
+          context: cm-team-github
 
       - golang-ci/docker-build:
           name: docker-job-integration-tests

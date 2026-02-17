@@ -27,6 +27,9 @@ steps:
         COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
       command: <<include(scripts/goveralls.sh)>>
   - run:
+      name: Install GitHub CLI
+      command: <<include(scripts/install-gh-cli.sh)>>
+  - run:
       name: Send coverage details to Github
       environment:
         COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
