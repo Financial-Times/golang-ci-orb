@@ -25,6 +25,7 @@ if [ "$current_branch" = "$default_branch" ]; then
 else
   # Fetch and checkout default branch
   git fetch origin "$default_branch":"$default_branch"
+  git stash --include-untracked --quiet
   git checkout "$default_branch"
   go test -coverprofile="$coverage_main_report" ./...
   coverage_main="$(cov "$coverage_main_report")"
