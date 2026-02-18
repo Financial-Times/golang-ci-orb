@@ -10,16 +10,22 @@ coverage_main_report="${COVERAGE_REPORT_FOLDER}/coverage-main.out"
 coverage="$(cov "$coverage_report")"
 
 
-# Check if the circleci job is running on the main branch, if so just report the coverage
+# Determine the default branch (main or master)
 current_branch=$(git rev-parse --abbrev-ref HEAD)
-if [ "$current_branch" = "main" ]; then
-  # On main, just report current coverage
-  msg="Coverage on main is $coverage"
+default_branch="main"
+if git show-ref --verify --quiet refs/heads/master; then
+  default_branch="master"
+fi
+
+# Check if the circleci job is running on the default branch, if so just report the coverage
+if [ "$current_branch" = "$default_branch" ]; then
+  # On default branch, just report current coverage
+  msg="Coverage on $default_branch is $coverage"
   status_state="success"
 else
-  # Fetch and checkout main branch
-  git fetch origin main:main
-  git checkout main
+  # Fetch and checkout default branch
+  git fetch origin "$default_branch":"$default_branch"
+  git checkout "$default_branch"
   go test -coverprofile="$coverage_main_report" ./...
   coverage_main="$(cov "$coverage_main_report")"
   git checkout -
