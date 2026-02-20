@@ -5,14 +5,6 @@ parameters:
     default: "/tmp/coverage-results"
 steps:
   - run:
-      name: Download goveralls
-      command: |
-        go get github.com/mattn/goveralls
-  - run:
-      name: Install goveralls
-      command: |
-        go install github.com/mattn/goveralls
-  - run:
       name: Create test folders
       command: |
         mkdir -p <<parameters.coverage-report-folder>>
@@ -21,11 +13,6 @@ steps:
       environment:
         COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
       command: <<include(scripts/go-test.sh)>>
-  - run:
-      name: Report coverage
-      environment:
-        COVERAGE_REPORT_FOLDER: <<parameters.coverage-report-folder>>
-      command: <<include(scripts/goveralls.sh)>>
   - run:
       name: Install GitHub CLI
       command: <<include(scripts/install-gh-cli.sh)>>
