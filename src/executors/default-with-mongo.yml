@@ -1,0 +1,18 @@
+description: >
+  Go executor with MongoDB service container for integration tests.
+parameters:
+  golang-version:
+    type: string
+    default: "1.25"
+  mongo-version:
+    type: string
+    default: "7"
+docker:
+  - image: cimg/go:<<parameters.golang-version>>
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
+  - image: mongo:<<parameters.mongo-version>>
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+environment:
+  EXECUTOR_NAME: default-with-mongo
