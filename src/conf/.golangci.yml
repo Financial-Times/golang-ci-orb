@@ -39,6 +39,9 @@ linters:
       default-signifies-exhaustive: true
     revive:
       confidence: 0
+      rules:
+        - name: exported
+          disabled: true
   exclusions:
     generated: lax
     presets:
