@@ -10,11 +10,15 @@ coverage_main_report="${COVERAGE_REPORT_FOLDER}/coverage-main.out"
 coverage="$(cov "$coverage_report")"
 
 
-# Determine the default branch (main or master)
+# Determine the default branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
-default_branch="main"
-if git show-ref --verify --quiet refs/heads/master; then
-  default_branch="master"
+default_branch="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')"
+if [ -z "$default_branch" ]; then
+  default_branch="$(git remote show origin 2>/dev/null | sed -n 's/^[[:space:]]*HEAD branch: //p')"
+fi
+if [ -z "$default_branch" ] || [ "$default_branch" = "(unknown)" ]; then
+  echo "Unable to determine the default branch from origin" >&2
+  exit 1
 fi
 
 # Check if the circleci job is running on the default branch, if so just report the coverage
